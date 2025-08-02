@@ -11,6 +11,9 @@ public class Conta {
     private Long numeroConta;
     private Float saldoConta;
 
+    public Conta() {
+    }
+
     public Conta(Long numeroConta, Float saldoConta) {
         this.numeroConta = numeroConta;
         this.saldoConta = saldoConta;
