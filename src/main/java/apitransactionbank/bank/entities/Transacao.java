@@ -12,10 +12,21 @@ public class Transacao {
     private Float valor;
     private Long conta;
 
+    public Transacao() {
+    }
+
     public Transacao(String formaPagamento, Float valor, Long conta) {
         this.formaPagamento = formaPagamento;
         this.valor = valor;
         this.conta = conta;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFormaPagamento() {

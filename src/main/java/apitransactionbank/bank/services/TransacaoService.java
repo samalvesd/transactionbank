@@ -9,6 +9,9 @@ import apitransactionbank.bank.repositories.TransacaoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class TransacaoService {
     private final TransacaoRepository transacaoRepository;
@@ -31,7 +34,7 @@ public class TransacaoService {
             } else {
                 contaEncontrada.setSaldoConta(saldoConta - valorComTaxa);
                 contaRepository.save(contaEncontrada);
-                transacaoRepository.save(new Transacao(input.getFormaPagamento(), valorComTaxa, input.getNumeroConta()));
+                transacaoRepository.save(new Transacao(input.getFormaPagamento().toUpperCase(), valorComTaxa, input.getNumeroConta()));
             }
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(e.getMessage());
@@ -54,4 +57,14 @@ public class TransacaoService {
         };
     }
 
+    public List<TransacaoDto> listaTransacoes() {
+        return transacaoRepository.findAll().stream().map(
+                cada -> new TransacaoDto(
+                        cada.getFormaPagamento(),
+                        cada.getConta(),
+                        cada.getValor(),
+                        cada.getId()
+                )
+        ).collect(Collectors.toList());
+    }
 }

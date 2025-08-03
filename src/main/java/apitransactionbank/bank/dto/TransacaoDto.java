@@ -8,11 +8,13 @@ public class TransacaoDto {
     @JsonProperty(value = "numero_conta")
     private Long numeroConta;
     private Float valor;
+    private Long id;
 
-    public TransacaoDto(String formaPagamento, Long numeroConta, Float valor) {
+    public TransacaoDto(String formaPagamento, Long numeroConta, Float valor, Long id) {
         this.formaPagamento = formaPagamento;
         this.numeroConta = numeroConta;
         this.valor = valor;
+        this.id = id;
     }
 
     public String getFormaPagamento() {
@@ -37,5 +39,13 @@ public class TransacaoDto {
 
     public void setValor(Float valor) {
         this.valor = valor;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
