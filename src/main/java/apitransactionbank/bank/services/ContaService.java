@@ -6,8 +6,6 @@ import apitransactionbank.bank.repositories.ContaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class ContaService {
     private final ContaRepository repository;

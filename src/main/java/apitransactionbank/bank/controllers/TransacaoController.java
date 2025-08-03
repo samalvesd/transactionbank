@@ -27,7 +27,7 @@ public class TransacaoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TransacaoDto>>  listaTransacoes() {
+    public ResponseEntity<List<TransacaoDto>> listaTransacoes() {
         return ResponseEntity.ok().body(service.listaTransacoes());
     }
 
