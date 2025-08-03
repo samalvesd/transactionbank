@@ -30,8 +30,8 @@ Siga os passos abaixo para ter a API rodando em sua máquina.
 
 Antes de começar, certifique-se de que você tem instalado:
 
-- **Java 21 Oracle OpenJDK** (ou uma versão compatível).
-- **Gradle** (para construir e executar o projeto).
+- **Java 21 Oracle OpenJDK**.
+- **Gradle**.
 
 A aplicação utiliza o banco de dados **H2**, então não é necessária nenhuma instalação ou configuração de banco de dados externa.
 
@@ -39,8 +39,8 @@ A aplicação utiliza o banco de dados **H2**, então não é necessária nenhum
 
 1.  **Clone o Repositório:**
     ```bash
-    git clone [URL_DO_SEU_REPOSITORIO]
-    cd nome-do-seu-repositorio
+    git clone git@github.com:samalvesd/transactionbank.git
+    cd transactionbank
     ```
 
 2.  **Construa o Projeto:**
@@ -75,8 +75,8 @@ Os endpoints da API podem ser acessados na porta `8080`.
   }
 ```
 - **Respostas Esperadas**:
-  ✅ `201 Created`
-  ❌ `400 Bad Request`
+    - ✅ `201 Created`
+    - ❌ `400 Bad Request`
 
 #### **2. Realizar uma Transação**
 
@@ -92,13 +92,13 @@ Os endpoints da API podem ser acessados na porta `8080`.
 }
 ```
 - **Respostas Esperadas**:
-  ✅ `201 Created`
-- Se a conta náo existir -
-  ❌ `404 Not Found`: Conta não encontrada para este número de conta informado.
-- Se o valor informado for maior que o saldo da conta -
-  ❌ `404 Not Found`: Saldo insuficiente para efetuar a transação.
-- Caso seja informado uma Forma de Pagamento não cadastrada -
-  ❌ `500 Internal Server Error`: Forma de pagamento inválida.
+  - ✅ `201 Created`
+- Se a conta não existir:
+  - ❌ `404 Not Found`: Conta não encontrada para este número de conta informado.
+- Se o valor informado for maior que o saldo da conta:
+  - ❌ `404 Not Found`: Saldo insuficiente para efetuar a transação.
+- Caso seja informado uma Forma de Pagamento não cadastrada:
+  - ❌ `500 Internal Server Error`: Forma de pagamento inválida.
 - **Exemplo de Resposta**:
 ```
 {
@@ -111,11 +111,11 @@ Os endpoints da API podem ser acessados na porta `8080`.
 
 - **`GET`** `/conta?numero_conta={numero}`
 - **Descrição**: Busca o saldo de uma conta específica usando o número da conta como parâmetro.
-- **Parâmetros**: Query Params com a Key: `numero_conta` e Value: {numero}.
+- **Parâmetros**: Query Params com a Key: `numero_conta` e Value: `{numero}`.
 - **Exemplo de Requisição**: `GET http://localhost:8080/conta?numero_conta=234`
 - **Respostas Esperadas**:
-  ✅ `200 OK`
-  ❌ `404 Not Found`
+  - ✅ `200 OK`
+  - ❌ `404 Not Found`
 - **Exemplo de Resposta**:
 ```
 {
@@ -130,7 +130,7 @@ Os endpoints da API podem ser acessados na porta `8080`.
 - **Parâmetros**: Não espera nenhum parâmetro.
 - **Exemplo de Requisição**: `GET http://localhost:8080/transacao`
 - **Respostas Esperadas**:
-  ✅ `200 OK`: Retorna uma lista de objetos JSON com as transações. Se nenhuma transação foi feita, retorna uma lista vazia [].
+  - ✅ `200 OK`: Retorna uma lista de objetos JSON com as transações. Se nenhuma transação foi feita, retorna uma lista vazia [].
 - **Exemplo de Resposta**:
 ```
 [
