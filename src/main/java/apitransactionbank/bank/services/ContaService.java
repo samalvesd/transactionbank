@@ -21,8 +21,7 @@ public class ContaService {
             throw new IllegalArgumentException("Já existe uma conta cadastrada com este número.");
 
         try {
-            Conta criaConta = new Conta(input.getNumeroConta(), input.getSaldo());
-            repository.save(criaConta);
+            repository.save(new Conta(input.getNumeroConta(), input.getSaldo()));
         } catch (RuntimeException returnException) {
             throw new RuntimeException("Erro ao criar conta. Message: " + returnException.getMessage());
         }

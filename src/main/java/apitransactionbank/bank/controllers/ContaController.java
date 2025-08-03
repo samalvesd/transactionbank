@@ -18,8 +18,7 @@ public class ContaController {
     @PostMapping
     public ResponseEntity<?> criarConta(@RequestBody ContaDto input) {
         try {
-            ContaDto contaCriada = service.criarConta(input);
-            return ResponseEntity.status(HttpStatus.CREATED).body(contaCriada);
+            return ResponseEntity.status(HttpStatus.CREATED).body(service.criarConta(input));
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao criar conta: " + ex.getMessage());
         }
@@ -27,12 +26,10 @@ public class ContaController {
 
     @GetMapping
     public ResponseEntity<ContaDto> buscarConta(@RequestParam("numero_conta") Long numeroConta) {
-        ContaDto contaEncontrada;
         try {
-            contaEncontrada = service.buscarConta(numeroConta);
+            return ResponseEntity.status(HttpStatus.OK).body(service.buscarConta(numeroConta));
         } catch (RuntimeException exception) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(contaEncontrada);
     }
 }
