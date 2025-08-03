@@ -15,7 +15,7 @@ Uma API RESTful que simula um sistema de transações bancárias. Ela permite a 
 
 O projeto foi construído utilizando as seguintes tecnologias:
 
-- **Linguagem**: Java 21
+- **Linguagem**: Java 24
 - **Framework**: Spring Boot
 - **Banco de Dados**: H2 (banco de dados em memória)
 - **Gerenciador de Dependências**: Gradle
@@ -30,7 +30,7 @@ Siga os passos abaixo para ter a API rodando em sua máquina.
 
 Antes de começar, certifique-se de que você tem instalado:
 
-- **Java 21 Oracle OpenJDK**.
+- **Java 24 Oracle OpenJDK**.
 - **Gradle**.
 
 A aplicação utiliza o banco de dados **H2**, então não é necessária nenhuma instalação ou configuração de banco de dados externa.
@@ -54,7 +54,9 @@ A aplicação utiliza o banco de dados **H2**, então não é necessária nenhum
     ```bash
     ./gradlew bootRun
     ```
-    A aplicação estará disponível em `http://localhost:8080`.
+    **Ou execute via IDE de sua preferência.**
+
+#### A aplicação estará disponível em `http://localhost:8080`.
 
 ---
 
