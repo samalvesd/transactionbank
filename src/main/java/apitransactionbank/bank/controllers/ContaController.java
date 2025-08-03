@@ -2,6 +2,7 @@ package apitransactionbank.bank.controllers;
 
 import apitransactionbank.bank.dto.ContaDto;
 import apitransactionbank.bank.services.ContaService;
+import org.hibernate.mapping.Any;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +17,13 @@ public class ContaController {
     }
 
     @PostMapping
-    public ResponseEntity<ContaDto> criarConta(@RequestBody ContaDto input) {
-        ContaDto contaCriada = service.criarConta(input);
-        return ResponseEntity.status(HttpStatus.CREATED).body(contaCriada);
+    public ResponseEntity<?> criarConta(@RequestBody ContaDto input) {
+        try {
+            ContaDto contaCriada = service.criarConta(input);
+            return ResponseEntity.status(HttpStatus.CREATED).body(contaCriada);
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao criar conta: " + ex.getMessage());
+        }
     }
 
     @GetMapping

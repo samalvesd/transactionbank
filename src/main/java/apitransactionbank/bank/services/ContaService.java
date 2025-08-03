@@ -6,6 +6,8 @@ import apitransactionbank.bank.repositories.ContaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ContaService {
     private final ContaRepository repository;
@@ -16,12 +18,17 @@ public class ContaService {
 
     @Transactional
     public ContaDto criarConta(final ContaDto input) {
+        boolean contaExistente = repository.findByNumeroConta(input.getNumeroConta()).isPresent();
+        if (contaExistente)
+            throw new IllegalArgumentException("Já existe uma conta cadastrada com este número.");
+
         try {
             Conta criaConta = new Conta(input.getNumeroConta(), input.getSaldo());
             repository.save(criaConta);
         } catch (RuntimeException returnException) {
             throw new RuntimeException("Erro ao criar conta. Message: " + returnException.getMessage());
         }
+
         return input;
     }
 
