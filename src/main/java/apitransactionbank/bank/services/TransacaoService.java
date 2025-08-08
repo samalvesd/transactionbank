@@ -9,6 +9,8 @@ import apitransactionbank.bank.repositories.TransacaoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,20 +27,23 @@ public class TransacaoService {
     @Transactional
     public ContaDto realizaTransacao(final TransacaoDto input) {
         Conta contaEncontrada = getContaEncontrada(input);
-        try {
-            float valorTransacao = input.getValor();
-            float valorComTaxa = getValorComTaxa(input, valorTransacao);
-            Float saldoConta = contaEncontrada.getSaldoConta();
-            if (valorComTaxa > saldoConta) {
-                throw new IllegalArgumentException("Saldo insuficiente para efetuar a transação.");
-            } else {
-                contaEncontrada.setSaldoConta(saldoConta - valorComTaxa);
-                contaRepository.save(contaEncontrada);
-                transacaoRepository.save(new Transacao(input.getFormaPagamento().toUpperCase(), valorComTaxa, input.getNumeroConta()));
-            }
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
+
+        BigDecimal valorTransacao = input.getValor();
+        BigDecimal valorTaxado = getValorComTaxa(input, valorTransacao);
+        BigDecimal saldoConta = contaEncontrada.getSaldoConta();
+
+        if (valorTaxado.compareTo(saldoConta) > 0)
+            throw new IllegalArgumentException("Saldo insuficiente para efetuar a transação.");
+
+        BigDecimal novoSaldo = saldoConta.subtract(valorTaxado);
+        contaEncontrada.setSaldoConta(novoSaldo.setScale(2, RoundingMode.HALF_UP));
+
+        contaRepository.save(contaEncontrada);
+        transacaoRepository.save(new Transacao(
+                input.getFormaPagamento().toUpperCase(),
+                valorTaxado,
+                input.getNumeroConta()
+        ));
         return new ContaDto(contaEncontrada.getNumeroConta(), contaEncontrada.getSaldoConta());
     }
 
@@ -48,13 +53,14 @@ public class TransacaoService {
         );
     }
 
-    private static float getValorComTaxa(TransacaoDto input, float valorTransacao) {
-        return switch (input.getFormaPagamento().toUpperCase()) {
+    private static BigDecimal getValorComTaxa(TransacaoDto input, BigDecimal valorTransacao) {
+        BigDecimal valorComTaxa = switch (input.getFormaPagamento().toUpperCase()) {
             case "P" -> valorTransacao;
-            case "D" -> valorTransacao + valorTransacao * 0.03f;
-            case "C" -> valorTransacao + valorTransacao * 0.05f;
+            case "D" -> valorTransacao.add(valorTransacao.multiply(new BigDecimal("0.03")));
+            case "C" -> valorTransacao.add(valorTransacao.multiply(new BigDecimal("0.05")));
             case null, default -> throw new RuntimeException("Forma de pagamento inválida.");
         };
+        return valorComTaxa.setScale(2, RoundingMode.HALF_UP);
     }
 
     public List<TransacaoDto> listaTransacoes() {

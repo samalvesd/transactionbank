@@ -6,6 +6,8 @@ import apitransactionbank.bank.repositories.ContaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 public class ContaService {
     private final ContaRepository repository;
@@ -16,15 +18,14 @@ public class ContaService {
 
     @Transactional
     public ContaDto criarConta(final ContaDto input) {
+        if (input.getSaldo().compareTo(BigDecimal.ZERO) < 0)
+            throw new RuntimeException("Não é permitido criar uma conta com valor negativo!");
+
         boolean contaExistente = repository.findByNumeroConta(input.getNumeroConta()).isPresent();
         if (contaExistente)
             throw new IllegalArgumentException("Já existe uma conta cadastrada com este número.");
 
-        try {
-            repository.save(new Conta(input.getNumeroConta(), input.getSaldo()));
-        } catch (RuntimeException returnException) {
-            throw new RuntimeException("Erro ao criar conta. Message: " + returnException.getMessage());
-        }
+        repository.save(new Conta(input.getNumeroConta(), input.getSaldo()));
 
         return input;
     }

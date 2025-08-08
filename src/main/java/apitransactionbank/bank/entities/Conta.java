@@ -2,19 +2,18 @@ package apitransactionbank.bank.entities;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "Conta")
 public class Conta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long numeroConta;
-    private Float saldoConta;
+    private final Long numeroConta;
+    private BigDecimal saldoConta;
 
-    public Conta() {
-    }
-
-    public Conta(Long numeroConta, Float saldoConta) {
+    public Conta(Long numeroConta, BigDecimal saldoConta) {
         this.numeroConta = numeroConta;
         this.saldoConta = saldoConta;
     }
@@ -23,15 +22,11 @@ public class Conta {
         return numeroConta;
     }
 
-    public void setNumeroConta(Long numeroConta) {
-        this.numeroConta = numeroConta;
-    }
-
-    public Float getSaldoConta() {
+    public BigDecimal getSaldoConta() {
         return saldoConta;
     }
 
-    public void setSaldoConta(Float saldoConta) {
+    public void setSaldoConta(BigDecimal saldoConta) {
         this.saldoConta = saldoConta;
     }
 

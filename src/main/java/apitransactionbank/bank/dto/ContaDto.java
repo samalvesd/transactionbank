@@ -2,12 +2,14 @@ package apitransactionbank.bank.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.math.BigDecimal;
+
 public class ContaDto {
     @JsonProperty(value = "numero_conta")
-    private Long numeroConta;
-    private Float saldo;
+    private final Long numeroConta;
+    private BigDecimal saldo;
 
-    public ContaDto(Long numeroConta, Float saldo) {
+    public ContaDto(Long numeroConta, BigDecimal saldo) {
         this.numeroConta = numeroConta;
         this.saldo = saldo;
     }
@@ -16,15 +18,8 @@ public class ContaDto {
         return numeroConta;
     }
 
-    public void setNumeroConta(Long numeroConta) {
-        this.numeroConta = numeroConta;
-    }
-
-    public Float getSaldo() {
+    public BigDecimal getSaldo() {
         return saldo;
     }
 
-    public void setSaldo(Float saldo) {
-        this.saldo = saldo;
-    }
 }
